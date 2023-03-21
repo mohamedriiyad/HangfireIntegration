@@ -7,29 +7,29 @@ First you need to install the following packages:
 
 then you need to configure the hangfire in your startup class:
   - add the following code to the ConfigureServices method:
-  
-      //Configuring hangfire
-      var hangfireConnectionString = Configuration.GetConnectionString("HangfireDb");
-              services.AddHangfire(configuration => configuration
-                  .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
-                  .UseSimpleAssemblyNameTypeSerializer()
-                  .UseRecommendedSerializerSettings()
-                  .UseStorage(
-                      new MySqlStorage(
-                          hangfireConnectionString,
-                          new MySqlStorageOptions
-                          {
-                              QueuePollInterval = TimeSpan.FromSeconds(10),
-                              JobExpirationCheckInterval = TimeSpan.FromHours(1),
-                              CountersAggregateInterval = TimeSpan.FromMinutes(5),
-                              PrepareSchemaIfNecessary = true,
-                              DashboardJobListLimit = 25000,
-                              TransactionTimeout = TimeSpan.FromMinutes(1),
-                              TablesPrefix = "Hangfire",
-                          }
-                      )
-                  ));
+      
+            var hangfireConnectionString = Configuration.GetConnectionString("HangfireDb");
 
+            services.AddHangfire(configuration => configuration
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseStorage(
+                    new MySqlStorage(
+                        hangfireConnectionString,
+                        new MySqlStorageOptions
+                        {
+                            QueuePollInterval = TimeSpan.FromSeconds(10),
+                            JobExpirationCheckInterval = TimeSpan.FromHours(1),
+                            CountersAggregateInterval = TimeSpan.FromMinutes(5),
+                            PrepareSchemaIfNecessary = true,
+                            DashboardJobListLimit = 25000,
+                            TransactionTimeout = TimeSpan.FromMinutes(1),
+                            TablesPrefix = "Hangfire",
+                        }
+                    )
+                ));
+                  
             // Add the processing server as IHostedService
             services.AddHangfireServer(options => options.WorkerCount = 1);
      
